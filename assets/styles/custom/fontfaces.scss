@@ -1,33 +1,35 @@
-// Fraunces Variable
+// Inter Variable
 @font-face {
-  font-family: 'Fraunces';
+  font-family: 'Inter';
   font-display: swap;
   font-style: normal;
-  src: url('../fonts/fraunces/fraunces.ttf') format('truetype');
+  src: url('../fonts/inter/inter.ttf') format('truetype');
 }
 
-// Fraunces Variable Italic
+// Inter Variable Italic
 @font-face {
-  font-family: 'Fraunces';
+  font-family: 'Inter';
   font-display: swap;
   font-style: italic;
-  src: url('../fonts/fraunces/fraunces-italic.ttf') format('truetype');
+  src: url('../fonts/inter/inter-italic.ttf') format('truetype');
 }
 
+// Public Sans Variable
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Public Sans';
   font-display: swap;
   font-style: normal;
-  src: url('../fonts/dmsans/dmsans.ttf') format('truetype');
+  src: url('../fonts/publicsans/publicsans.ttf') format('truetype');
 }
 
-// Inter 700 Bold
+// Public Sans Variable Italic
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Public Sans';
   font-display: swap;
   font-style: italic;
-  src: url('../fonts/dmsans/dmsans-italic.ttf') format('truetype');
+  src: url('../fonts/publicsans/publicsans-italic.ttf') format('truetype');
 }
+
 
 :root {
   --headline-font-family: 'Public Sans', sans-serif;
