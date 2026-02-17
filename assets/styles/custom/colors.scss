@@ -24,8 +24,14 @@
   --accent-color-light-rgb: 244, 215, 217;
   --accent-color-dark: #9B3D43;
   --accent-color-dark-rgb: 155, 61, 67;
-  --accent-color-darker: #803338;
-  --accent-color-darker-rgb: 128, 51, 56;
+
+  --accent-color-darker: #803338; // Deprecated / Fallback
+  --accent-color-darker-rgb: 128, 51, 56; // Deprecated / Fallback
+
+  --accent-color-background-light: #F4D7D9;
+  --accent-color-background-light-rgb: 244, 215, 217;
+  --accent-color-background-dark: #803338;
+  --accent-color-background-dark-rgb: 128, 51, 56;
 
   --text-color-dark: #171717;
   --text-color-dark-rgb: 23, 23, 23;
@@ -250,7 +256,7 @@
           color: var(--text-color-light);
 
           &:hover {
-            background-color: var(--accent-color-darker);
+            background-color: var(--accent-color-background-dark);
           }
         }
       }
