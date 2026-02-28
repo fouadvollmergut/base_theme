@@ -1,0 +1,15 @@
+.not-found {
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--inner-spacing-lg);
+    padding: var(--text-padding-x) var(--text-padding-y);
+    border-radius: var(--border-radius-lg);
+  }
+
+  .textbox {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-color-light);
+  }
+}

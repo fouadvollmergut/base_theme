@@ -12,9 +12,9 @@ body {
   font-weight: var(--p-font-weight);
   letter-spacing: var(--p-letter-spacing);
 
-  &.admin-bar header {
-    top: 40px;
-  }
+  // &.admin-bar header {
+  //   top: 40px;
+  // }
 
   &.mobile-menu--open {
     overflow: hidden;
