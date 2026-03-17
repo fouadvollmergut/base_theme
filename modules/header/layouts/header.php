@@ -19,6 +19,10 @@
       <?php if (contentCheck('headline')): ?>
         <?php contentCreate('headline', $seoPosition . '/text', 'auto', 'h1'); ?>
       <?php endif; ?>
+
+      <?php if (contentCheck('copy')): ?>
+        <?php contentCreate('copy', 'span/text', 'auto'); ?>
+      <?php endif; ?>
     </div>
 
     <?php if (contentCheck('button')): ?>
