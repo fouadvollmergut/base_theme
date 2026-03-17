@@ -1,6 +1,6 @@
 .banner {
   .content--text {
-    .textbox {
+    .banner-content {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -11,13 +11,20 @@
 
       .gdymc_text, .gdymc_text * {
         display: inline-block;
-        text-align: center;
       }
 
       @include device-size('tablet') {
         flex-direction: row;
         justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: nowrap;
         gap: var(--inner-spacing-lg);
+      }
+
+      .textbox {
+        display: flex;
+        flex-direction: column;
+        gap: var(--inner-spacing-sm);
       }
 
       .gdymc_button-group {

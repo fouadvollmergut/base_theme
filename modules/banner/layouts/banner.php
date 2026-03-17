@@ -4,10 +4,14 @@
 ?>
 
 <div class="content--text col-w6p1">
-  <div class="textbox">
-    <div <?php if ($animation) echo 'data-aos="fade-left"'; ?>>
+  <div class="banner-content">
+    <div class="textbox" <?php if ($animation) echo 'data-aos="fade-left"'; ?>>
       <?php if (contentCheck('copy')): ?>
-        <?php contentCreate('copy', $seoPosition .'/text', 'auto', 'h6'); ?>
+        <?php contentCreate('copy', $seoPosition . '/text', 'auto', 'h6'); ?>
+      <?php endif; ?>
+
+      <?php if (contentCheck('subline')): ?>
+        <?php contentCreate('subline', 'span/text', 'auto'); ?>
       <?php endif; ?>
     </div>
 
