@@ -1,0 +1,14 @@
+<?php
+
+  add_action ('gdymc_module_options_settings', function ( $module ) {
+    if ($module->type == gdymc_module_name( __FILE__ )):
+
+      optionInput( 'items', array(
+        'type' => 'sortable',
+        'label' => __( 'Auflistung der Galerie-Elemente', 'Theme' ),
+      ), $module->id );
+
+    endif;
+  });
+
+?>
