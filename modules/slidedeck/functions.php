@@ -5,7 +5,7 @@
 
       optionInput( 'items', array(
         'type' => 'sortable',
-        'label' => __( 'Auflistung der Galerie-Elemente', 'Theme' ),
+        'label' => __( 'Auflistung der Slide-Elemente', 'Theme' ),
       ), $module->id );
 
     endif;

@@ -3,9 +3,9 @@
   $items = explode(',', $items);
 ?>
 
-<div class="content--photobook col-w6p1">
+<div class="content--slidedeck col-w6p1">
   <?php foreach ($items as $i=>$item): ?>
-    <div class="gdymc_sortable_item slide" data-name="<?php echo substr(str_replace('-', '', $item), 0, 8); ?>" style="bottom: <?php echo 50 + (sizeof($items) * 50) - ($i * 50); ?>px; z-index: <?php echo sizeof($items) - $i; ?>; margin-top: <?php echo $i * 50; ?>px;">
+    <div class="gdymc_sortable_item slide" data-name="<?php echo substr(str_replace('-', '', $item), 0, 8); ?>" style="bottom: <?php echo (sizeof($items) * 50) - ($i * 50); ?>px; z-index: <?php echo sizeof($items) - $i; ?>; margin-top: <?php echo $i * 50; ?>px; transform: scale(<?php echo 1 - ($i * 0.01); ?>);">
       <?php if (contentCheck('image-' . $item)): ?>
         <div class="slide-image">
           <div class="imagebox">
@@ -18,9 +18,9 @@
       <div class="slide-content">
         <?php if (contentCheck('headline-' . $item) || contentCheck('copy-' . $item)): ?>
           <div class="textbox">
-            <?php contentCreate('headline-' . $item, 'h4/text', 'auto', 'h4'); ?>
+            <?php contentCreate('headline-' . $item, 'h4/text', 'auto', 'h2'); ?>
 
-            <?php contentCreate('copy-' . $item, 'text'); ?>
+            <?php contentCreate('copy-' . $item, 'text', '375'); ?>
           </div>
         <?php endif; ?>
         

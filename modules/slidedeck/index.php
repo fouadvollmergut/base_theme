@@ -5,7 +5,7 @@
 ?>
 
 <section class="module grid">
-  <div class="subgrid photobook end" <?php if ($animation) echo 'data-aos="fade-up"'; ?>>
-    <?php include 'layouts/photobook.php'; ?>
+  <div class="subgrid slidedeck end" <?php if ($animation) echo 'data-aos="fade-up"'; ?>>
+    <?php include 'layouts/slidedeck.php'; ?>
   </div>
 </section>
