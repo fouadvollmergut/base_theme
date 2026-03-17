@@ -16,7 +16,7 @@
       @include device-size('tablet') {
         flex-direction: row;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         flex-wrap: nowrap;
         gap: var(--inner-spacing-lg);
       }
