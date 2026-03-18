@@ -6,6 +6,7 @@
       optionInput( 'items', array(
         'type' => 'sortable',
         'label' => __( 'Auflistung der Slide-Elemente', 'Theme' ),
+        'limit' => 5
       ), $module->id );
 
     endif;
