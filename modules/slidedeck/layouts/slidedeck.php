@@ -5,7 +5,7 @@
 
 <div class="content--slidedeck col-w6p1">
   <?php foreach ($items as $i=>$item): ?>
-    <div class="gdymc_sortable_item slide" data-name="<?php echo substr(str_replace('-', '', $item), 0, 8); ?>" style="bottom: <?php echo (sizeof($items) * 50) - ($i * 50); ?>px; z-index: <?php echo sizeof($items) - $i; ?>; margin-top: <?php echo $i * 50; ?>px; transform: scale(<?php echo 1 - ($i * 0.01); ?>);">
+    <div class="gdymc_sortable_item slide" data-name="<?php echo substr(str_replace('-', '', $item), 0, 8); ?>" style="bottom: <?php echo (sizeof($items) * 50) - ($i * 50); ?>px; z-index: <?php echo sizeof($items) - $i; ?>; margin-top: <?php echo $i * 50; ?>px;">
       <?php if (contentCheck('image-' . $item)): ?>
         <div class="slide-image">
           <div class="imagebox">
