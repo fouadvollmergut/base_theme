@@ -21,6 +21,14 @@
         object-fit: cover;
         border-radius: var(--border-radius-lg);
       }
+
+      video.gdymc_video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: var(--border-radius-lg);
+      }
     }
   }
 

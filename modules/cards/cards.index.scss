@@ -101,6 +101,13 @@
           height: 100%;
           aspect-ratio: 1 / 1;
         }
+
+        video.gdymc_video {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
 
       .textbox {
