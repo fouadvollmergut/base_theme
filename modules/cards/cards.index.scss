@@ -111,11 +111,11 @@
       }
 
       .textbox {
-        padding: 0 var(--text-padding-x);
+        padding: 0 var(--inner-text-padding-x);
 
         .card-headline-numbers {
           display: inline-block;
-          margin-top: var(--text-padding-y);
+          margin-top: var(--inner-text-padding-y);
           width: 100%;
         }
       }
@@ -126,8 +126,8 @@
       flex-direction: column;
       justify-content: space-between;
       gap: var(--inner-spacing-md);
-      padding: 0 var(--text-padding-x);
-      padding-bottom: var(--text-padding-y);
+      padding: 0 var(--inner-text-padding-x);
+      padding-bottom: var(--inner-text-padding-y);
       height: 100%;
 
       .gdymc_button-group {
@@ -157,7 +157,7 @@
           }
 
           h6.subline {
-            padding: var(--text-padding-y) var(--inner-spacing-sm);
+            padding: var(--inner-text-padding-y) var(--inner-spacing-sm);
           }
         }
       }

@@ -91,7 +91,7 @@
       flex-direction: column;
       justify-content: space-between;
       gap: var(--inner-spacing-md);
-      padding: var(--text-padding-y) var(--text-padding-x);
+      padding: var(--inner-text-padding-y) var(--inner-text-padding-x);
 
       @include device-size('tablet') {
         height: 100%;

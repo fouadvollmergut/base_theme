@@ -36,6 +36,7 @@ $grid-col-width: calc((100% - (#{$grid-margin-left} + #{$grid-margin-right})) / 
     grid-template-columns: subgrid;
     grid-auto-flow: row dense;
     row-gap: calc(var(--inner-spacing-lg) * 2);
+    gap: var(--column-gap);
   }
 
   .custom-subgrid {
