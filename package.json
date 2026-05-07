@@ -1,6 +1,6 @@
 {
   "name": "base-theme",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Wordpress Theme Base",
   "main": "index.js",
   "scripts": {
