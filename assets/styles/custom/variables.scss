@@ -11,8 +11,10 @@
 
   --module-spacing: 1.5rem;
 
-  --text-padding-x: 1rem;
+  --text-padding-x: 0rem;
   --text-padding-y: 1rem;
+  --inner-text-padding-x: 1rem;
+  --inner-text-padding-y: 1rem;
 
   --container-padding-x: 0rem;
   --container-padding-y: 0rem;
@@ -20,6 +22,8 @@
   --border-radius-sm: .15rem;
   --border-radius-md: .25rem;
   --border-radius-lg: .5rem;
+
+  --column-gap: 1rem;
 
   // Shadows
 
@@ -66,15 +70,23 @@
 
     --text-padding-x: 2rem;
     --text-padding-y: 2rem;
+    --inner-text-padding-x: 2rem;
+    --inner-text-padding-y: 2rem;
 
     --container-padding-x: 2rem;
     --container-padding-y: 2rem;
+
+    --column-gap: 2rem;
   }
 }
 
 @include device-size($device: 'desktop') {
   :root {
-    --text-padding-x: 3rem;
+    --text-padding-x: 0rem;
     --text-padding-y: 3rem;
+    --inner-text-padding-x: 3rem;
+    --inner-text-padding-y: 3rem;
+
+    --column-gap: 3rem;
   }
 }

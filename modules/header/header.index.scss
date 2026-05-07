@@ -40,7 +40,7 @@
     flex-direction: column;
     bottom: 0;
     justify-content: flex-end;
-    padding: var(--inner-spacing-md);
+    padding: var(--inner-text-padding-y) var(--inner-text-padding-x);
     gap: var(--inner-spacing-md);
     z-index: 1;
     pointer-events: none;
@@ -61,7 +61,7 @@
 
   @include device-size('tablet') {
     .content--text {
-      padding: var(--inner-spacing-lg);
+      padding: var(--inner-text-padding-y) var(--inner-text-padding-x);
       gap: var(--inner-spacing-lg);
 
       .textbox {

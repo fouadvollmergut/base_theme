@@ -84,7 +84,7 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-end;
-      padding: var(--text-padding-y) var(--text-padding-x);
+      padding: var(--inner-text-padding-y) var(--inner-text-padding-x);
 
       &:hover :is(.swiper-button-next, .swiper-button-prev):before {
         opacity: 1;

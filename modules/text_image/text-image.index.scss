@@ -57,7 +57,8 @@
       .textbox-inner {
         display: flex;
         flex-direction: column;
-        gap: var(--inner-spacing-lg);
+        row-gap: var(--inner-spacing-lg);
+        column-gap: var(--column-gap);
         padding: 0 var(--text-padding-x);
 
         > * {
