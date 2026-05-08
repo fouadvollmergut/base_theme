@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: row;
-  gap: var(--inner-spacing-lg);
+  gap: var(--content-gap);
   padding: var(--inner-spacing-lg) 0;
 
   @include device-size('tablet') {
@@ -36,17 +36,24 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--inner-spacing-md);
+    gap: var(--content-gap);
     padding: var(--container-padding-y) var(--container-padding-x);
+
+    container-name: form-container;
+    container-type: inline-size;
 
     .form--row {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: var(--inner-spacing-md);
+      gap: var(--content-gap);
+
+      @container form-container (width > 700px) {
+        flex-wrap: nowrap;
+      }
 
       > * {
-        width: 100%;
+        flex-basis: 100%;
         min-width: 200px;
       }
     }

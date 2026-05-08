@@ -58,7 +58,7 @@
     &.horizontal {
       flex-direction: row;
       height: 100%;
-      gap: var(--inner-spacing-sm);
+      gap: var(--content-gap);
     }
 
     > * {

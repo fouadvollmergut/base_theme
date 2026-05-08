@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 loop: true,
                 slidesPerView: swiperSlidesPerView,
-                spaceBetween: parseFloat(style.getPropertyValue('--inner-spacing-sm'), 10) * 16,
+                spaceBetween: parseFloat(style.getPropertyValue('--content-gap'), 10) * 16,
                 breakpoints: {
                   0: {
                     slidesPerView: 1
