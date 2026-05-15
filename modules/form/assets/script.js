@@ -79,33 +79,49 @@ class Form {
   }
 
   validateAll () {
-    let firstInvalid = null;
-
     this.fields.forEach(field => {
       if (this.isIgnored(field)) {
         return;
       }
 
-      if (!this.validateField(field) && !firstInvalid) {
-        firstInvalid = field;
-      }
+      this.validateField(field);
     });
+  }
 
-    return firstInvalid;
+  firstMissingRequired () {
+    for (const field of this.fields) {
+      if (this.isIgnored(field) || !field.required) {
+        continue;
+      }
+
+      // Only block submission for empty required fields. Other constraint
+      // violations (e.g. an invalid email format) still surface via the
+      // live `.invalid` styling but do not prevent submission, so the
+      // mailer plugin's `sendForm` handler can run as before.
+      if (field.validity && field.validity.valueMissing) {
+        return field;
+      }
+    }
+
+    return null;
   }
 
   handleSubmit (event) {
-    const firstInvalid = this.validateAll();
+    // Refresh the live `.invalid` state for every field so the user sees
+    // all current validation errors, not only the missing required ones.
+    this.validateAll();
 
-    if (!firstInvalid) {
+    const firstMissing = this.firstMissingRequired();
+
+    if (!firstMissing) {
       return;
     }
 
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    if (typeof firstInvalid.focus === 'function') {
-      firstInvalid.focus();
+    if (typeof firstMissing.focus === 'function') {
+      firstMissing.focus();
     }
   }
 
