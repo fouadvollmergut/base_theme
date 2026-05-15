@@ -27,22 +27,15 @@
     // Resolve the recipient and subject server-side from the per-module
     // GDYMC options so the recipient address never has to be exposed in
     // the page markup. `optionGet( 'recipient', ... )` returns the value
-    // configured for this specific form module; if the module hasn't set
-    // one explicitly it falls back to the mailer plugin's global
-    // `fvt_ct_mail_recipient` option (see the `optionInput( 'recipient',
-    // ..., 'default' => $defaultRecipient )` registration below). As a
-    // last resort we fall back to `admin_email` so the form still works
-    // before any option has been configured.
+    // configured for this specific form module. As a last resort we fall
+    // back to `admin_email` so the form still works before any option has
+    // been configured.
     $recipient = '';
     $subject   = '';
 
     if ( ! empty( $module_id ) && $object_id && function_exists( 'optionGet' ) ) {
       $recipient = sanitize_email( (string) optionGet( 'recipient', $module_id, $object_id, 'post' ) );
       $subject   = sanitize_text_field( (string) optionGet( 'subject',   $module_id, $object_id, 'post' ) );
-    }
-
-    if ( empty( $recipient ) || ! is_email( $recipient ) ) {
-      $recipient = sanitize_email( get_option( 'fvt_ct_mail_recipient' ) );
     }
 
     if ( empty( $recipient ) || ! is_email( $recipient ) ) {
@@ -114,8 +107,6 @@
   add_action( 'wp_ajax_nopriv_fvt_form_send', 'fvt_form_send_handler' );
 
   add_action( 'gdymc_module_options_settings', function ( $module ) {
-    $defaultRecipient = get_option('fvt_ct_mail_recipient');
-
     if( $module->type == gdymc_module_name( __FILE__ ) ):
       optionInput( 'subject', array(
         'type' => 'text',
@@ -126,7 +117,6 @@
       optionInput( 'recipient', array(
         'type' => 'text',
         'label' => __( 'Empfänger', 'Theme' ),
-        'default' => $defaultRecipient
       ), $module->id );
 
       optionInput( 'labels', array(
