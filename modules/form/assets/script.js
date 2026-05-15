@@ -14,6 +14,7 @@ class Form {
     this.form = form;
     this.fileInput = form.querySelector('input[type="file"]');
     this.filePreview = form.querySelector('.filePreview');
+    this.submit = form.querySelector('input[type="submit"], button[type="submit"]');
     this.fields = form.querySelectorAll('input, select, textarea');
 
     this.init();
@@ -30,7 +31,10 @@ class Form {
 
       field.addEventListener('focusout', () => this.validateField(field));
 
-      // Clear the invalid state as soon as the user corrects the value.
+      // Checkboxes/radios/selects/files only fire `change`, text fields fire
+      // both `change` and `input`. Listening to both keeps the `.invalid`
+      // state in sync regardless of the field type.
+      field.addEventListener('change', () => this.validateField(field));
       field.addEventListener('input', () => {
         if (field.classList.contains('invalid')) {
           this.validateField(field);
@@ -52,6 +56,14 @@ class Form {
 
       wrapper.addEventListener('click', event => this.toggleChildCheckbox(event, wrapper, checkbox));
     });
+
+    // Block submission as long as the form has invalid fields. The submit
+    // button carries `e-click="sendForm"`, which the mailer plugin binds to
+    // a click handler — using the capture phase + `stopImmediatePropagation`
+    // guarantees that handler never fires for an invalid form.
+    if (this.submit) {
+      this.submit.addEventListener('click', event => this.handleSubmit(event), true);
+    }
   }
 
   isIgnored (field) {
@@ -64,6 +76,37 @@ class Form {
     field.classList.toggle('invalid', !valid);
 
     return valid;
+  }
+
+  validateAll () {
+    let firstInvalid = null;
+
+    this.fields.forEach(field => {
+      if (this.isIgnored(field)) {
+        return;
+      }
+
+      if (!this.validateField(field) && !firstInvalid) {
+        firstInvalid = field;
+      }
+    });
+
+    return firstInvalid;
+  }
+
+  handleSubmit (event) {
+    const firstInvalid = this.validateAll();
+
+    if (!firstInvalid) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if (typeof firstInvalid.focus === 'function') {
+      firstInvalid.focus();
+    }
   }
 
   renderFilePreview () {

@@ -118,6 +118,7 @@
     <div class="flex row-static space-between">
       <input 
         type="checkbox" 
+        id="privacy"
         name="privacy" 
         required
       />
