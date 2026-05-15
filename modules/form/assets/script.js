@@ -1,9 +1,11 @@
 /**
  * Form module
  *
- * Adds live validation, file preview and checkbox-wrapper click handling
- * to the GDYMC Form module. Submission is delegated to the mailer plugin
- * (via the `e-click="sendForm"` attribute on the submit button).
+ * Adds live validation, file preview, checkbox-wrapper click handling and
+ * AJAX submission to the GDYMC Form module. The form is sent to a theme-
+ * owned `admin-ajax.php` action (`fvt_form_send`, see
+ * `modules/form/functions.php`) which dispatches the message via
+ * WordPress' native `wp_mail()` function.
  *
  * Validation relies on the HTML5 Constraint Validation API, so any
  * `required`, `type="email"`, `pattern`, `minlength`, `maxlength`, ...
@@ -57,11 +59,9 @@ class Form {
       wrapper.addEventListener('click', event => this.toggleChildCheckbox(event, wrapper, checkbox));
     });
 
-    // Block submission as long as the form has invalid fields. The submit
-    // button carries `e-click="sendForm"`, which the mailer plugin binds to
-    // a click handler — using the capture phase + `stopImmediatePropagation`
-    // guarantees that handler never fires for an invalid form.
     if (this.submit) {
+      // Capture phase guarantees we run before any other click handler that
+      // might be bound to the submit button.
       this.submit.addEventListener('click', event => this.handleSubmit(event), true);
     }
   }
@@ -96,8 +96,7 @@ class Form {
 
       // Only block submission for empty required fields. Other constraint
       // violations (e.g. an invalid email format) still surface via the
-      // live `.invalid` styling but do not prevent submission, so the
-      // mailer plugin's `sendForm` handler can run as before.
+      // live `.invalid` styling but do not prevent submission.
       if (field.validity && field.validity.valueMissing) {
         return field;
       }
@@ -107,22 +106,64 @@ class Form {
   }
 
   handleSubmit (event) {
+    // Always prevent the native form submit / page navigation — submission
+    // happens via fetch to the theme's AJAX endpoint.
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
     // Refresh the live `.invalid` state for every field so the user sees
     // all current validation errors, not only the missing required ones.
     this.validateAll();
 
     const firstMissing = this.firstMissingRequired();
 
-    if (!firstMissing) {
+    if (firstMissing) {
+      if (typeof firstMissing.focus === 'function') {
+        firstMissing.focus();
+      }
       return;
     }
 
-    event.preventDefault();
-    event.stopImmediatePropagation();
+    this.send();
+  }
 
-    if (typeof firstMissing.focus === 'function') {
-      firstMissing.focus();
+  send () {
+    const url = this.form.dataset.ajaxUrl;
+    const action = this.form.dataset.action;
+
+    if (!url || !action) {
+      return;
     }
+
+    const data = new FormData(this.form);
+    data.append('action', action);
+    data.append('nonce', this.form.dataset.nonce || '');
+    data.append('recipient', this.form.dataset.recipient || '');
+    data.append('subject', this.form.dataset.subject || '');
+
+    this.form.classList.remove('success', 'failure');
+    this.form.classList.add('loading', 'disabled');
+
+    fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      body: data
+    })
+      .then(response => response.json().catch(() => ({ success: false })).then(json => ({ ok: response.ok, json })))
+      .then(({ ok, json }) => {
+        this.form.classList.remove('loading');
+
+        if (ok && json && json.success) {
+          this.form.classList.add('success');
+        } else {
+          this.form.classList.remove('disabled');
+          this.form.classList.add('failure');
+        }
+      })
+      .catch(() => {
+        this.form.classList.remove('loading', 'disabled');
+        this.form.classList.add('failure');
+      });
   }
 
   renderFilePreview () {

@@ -26,8 +26,12 @@
 
 <form 
   class="form--form col-w4p3" 
-  data-recipient="<?php echo $recipient; ?>" 
-  data-subject="<?php echo $subject; ?>"
+  enctype="multipart/form-data"
+  data-recipient="<?php echo esc_attr( $recipient ); ?>" 
+  data-subject="<?php echo esc_attr( $subject ); ?>"
+  data-action="fvt_form_send"
+  data-ajax-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>"
+  data-nonce="<?php echo esc_attr( wp_create_nonce( 'fvt_form_send' ) ); ?>"
   <?php if ($animation) echo 'data-aos="fade-up" data-aos-delay="100"'; ?>
 >
   <div class="form--row">
@@ -134,7 +138,6 @@
           class="button button-primary"
           name="submit"
           type="submit"
-          e-click="sendForm"
           required="false"
           value="<?php _e('Senden', 'Theme'); ?>"
         />
