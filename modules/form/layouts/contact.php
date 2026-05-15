@@ -1,9 +1,18 @@
 <?php 
+  global $moduleID;
+
   $showLabels = !optionGet('labels') ? 'none' : '';
-  $recipient = optionGet('recipient');
-  $subject = optionGet('subject');
   $seoPosition = optionGet('seo-position');
   $animation = optionGet('animation');
+
+  // The recipient (and subject) are intentionally NOT exposed in the
+  // markup. The AJAX handler in `modules/form/functions.php` resolves
+  // them server-side via `optionGet( 'recipient', $moduleID, $objectID )`,
+  // which falls back to the mailer plugin's `fvt_ct_mail_recipient`
+  // option (see `modules/form/functions.php`, `optionInput( 'recipient',
+  // ..., 'default' => $defaultRecipient )`).
+  $formModuleID = $moduleID;
+  $formObjectID = function_exists( 'gdymc_object_id' ) ? gdymc_object_id() : 0;
 ?>
 
 <div class="form--text col-w2p1" <?php if ($animation) echo 'data-aos="fade-up"'; ?>>
@@ -26,8 +35,12 @@
 
 <form 
   class="form--form col-w4p3" 
-  data-recipient="<?php echo $recipient; ?>" 
-  data-subject="<?php echo $subject; ?>"
+  enctype="multipart/form-data"
+  data-action="fvt_form_send"
+  data-ajax-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>"
+  data-nonce="<?php echo esc_attr( wp_create_nonce( 'fvt_form_send' ) ); ?>"
+  data-module-id="<?php echo esc_attr( $formModuleID ); ?>"
+  data-object-id="<?php echo esc_attr( $formObjectID ); ?>"
   <?php if ($animation) echo 'data-aos="fade-up" data-aos-delay="100"'; ?>
 >
   <div class="form--row">
@@ -41,7 +54,6 @@
       <input 
         type="text" 
         name="name" 
-        e-focusout="checkFormInput"
         placeholder="<?php _e('Name*', 'Theme'); ?>"
         autocomplete="family-name"
         required
@@ -60,7 +72,6 @@
       <input 
         type="email" 
         name="mail" 
-        e-focusout="checkFormInput"
         placeholder="<?php _e('E-Mail*', 'Theme'); ?>"
         autocomplete="email"
         required
@@ -77,7 +88,6 @@
       <input 
         type="tel" 
         name="telefon" 
-        e-focusout="checkFormInput"
         placeholder="<?php _e('Telefon*', 'Theme'); ?>"
         autocomplete="tel"
         required
@@ -97,7 +107,6 @@
       rows="1"
       placeholder="<?php _e('Nachricht', 'Theme'); ?>"
       onkeyup="this.rows = this.value.split('\n').length"
-      e-focusout="checkFormInput"
       required
     ></textarea>
   </div>
@@ -112,8 +121,6 @@
     <input 
       type="file"
       name="file"
-      e-focusout="checkFormInput"
-      e-change="handleFilePreview"
       required
     />
 
@@ -121,9 +128,10 @@
   </div>
 
   <div class="footer-container flex row space-between">
-    <div class="flex row-static space-between" e-click="checkChildCheckbox">
+    <div class="flex row-static space-between">
       <input 
         type="checkbox" 
+        id="privacy"
         name="privacy" 
         required
       />
@@ -139,7 +147,6 @@
           class="button button-primary"
           name="submit"
           type="submit"
-          e-click="sendForm"
           required="false"
           value="<?php _e('Senden', 'Theme'); ?>"
         />
