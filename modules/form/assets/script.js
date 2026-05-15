@@ -138,8 +138,11 @@ class Form {
     const data = new FormData(this.form);
     data.append('action', action);
     data.append('nonce', this.form.dataset.nonce || '');
-    data.append('recipient', this.form.dataset.recipient || '');
-    data.append('subject', this.form.dataset.subject || '');
+    // The recipient (and subject) are deliberately not sent from the
+    // client — the AJAX handler resolves them server-side from the
+    // GDYMC per-module options identified by the module + object IDs.
+    data.append('module_id', this.form.dataset.moduleId || '');
+    data.append('object_id', this.form.dataset.objectId || '');
 
     this.form.classList.remove('success', 'failure');
     this.form.classList.add('loading', 'disabled');

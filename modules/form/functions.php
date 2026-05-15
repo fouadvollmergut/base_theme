@@ -11,16 +11,34 @@
   function fvt_form_send_handler () {
     check_ajax_referer( 'fvt_form_send', 'nonce' );
 
-    $name      = isset( $_POST['name'] )      ? sanitize_text_field( wp_unslash( $_POST['name'] ) )      : '';
-    $mail      = isset( $_POST['mail'] )      ? sanitize_email( wp_unslash( $_POST['mail'] ) )           : '';
-    $telefon   = isset( $_POST['telefon'] )   ? sanitize_text_field( wp_unslash( $_POST['telefon'] ) )   : '';
-    $message   = isset( $_POST['message'] )   ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
-    $privacy   = isset( $_POST['privacy'] )   && $_POST['privacy'];
-    $recipient = isset( $_POST['recipient'] ) ? sanitize_email( wp_unslash( $_POST['recipient'] ) )      : '';
-    $subject   = isset( $_POST['subject'] )   ? sanitize_text_field( wp_unslash( $_POST['subject'] ) )   : '';
+    $name      = isset( $_POST['name'] )    ? sanitize_text_field( wp_unslash( $_POST['name'] ) )       : '';
+    $mail      = isset( $_POST['mail'] )    ? sanitize_email( wp_unslash( $_POST['mail'] ) )            : '';
+    $telefon   = isset( $_POST['telefon'] ) ? sanitize_text_field( wp_unslash( $_POST['telefon'] ) )    : '';
+    $message   = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
+    $privacy   = isset( $_POST['privacy'] ) && $_POST['privacy'];
+
+    $module_id = isset( $_POST['module_id'] ) ? sanitize_text_field( wp_unslash( $_POST['module_id'] ) ) : '';
+    $object_id = isset( $_POST['object_id'] ) ? absint( $_POST['object_id'] )                            : 0;
 
     if ( empty( $name ) || empty( $mail ) || ! is_email( $mail ) || empty( $telefon ) || empty( $message ) || ! $privacy ) {
       wp_send_json_error( array( 'message' => __( 'Bitte füllen Sie alle Pflichtfelder aus.', 'Theme' ) ), 400 );
+    }
+
+    // Resolve the recipient and subject server-side from the per-module
+    // GDYMC options so the recipient address never has to be exposed in
+    // the page markup. `optionGet( 'recipient', ... )` returns the value
+    // configured for this specific form module; if the module hasn't set
+    // one explicitly it falls back to the mailer plugin's global
+    // `fvt_ct_mail_recipient` option (see the `optionInput( 'recipient',
+    // ..., 'default' => $defaultRecipient )` registration below). As a
+    // last resort we fall back to `admin_email` so the form still works
+    // before any option has been configured.
+    $recipient = '';
+    $subject   = '';
+
+    if ( ! empty( $module_id ) && $object_id && function_exists( 'optionGet' ) ) {
+      $recipient = sanitize_email( (string) optionGet( 'recipient', $module_id, $object_id, 'post' ) );
+      $subject   = sanitize_text_field( (string) optionGet( 'subject',   $module_id, $object_id, 'post' ) );
     }
 
     if ( empty( $recipient ) || ! is_email( $recipient ) ) {

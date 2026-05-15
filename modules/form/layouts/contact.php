@@ -1,9 +1,18 @@
 <?php 
+  global $moduleID;
+
   $showLabels = !optionGet('labels') ? 'none' : '';
-  $recipient = optionGet('recipient');
-  $subject = optionGet('subject');
   $seoPosition = optionGet('seo-position');
   $animation = optionGet('animation');
+
+  // The recipient (and subject) are intentionally NOT exposed in the
+  // markup. The AJAX handler in `modules/form/functions.php` resolves
+  // them server-side via `optionGet( 'recipient', $moduleID, $objectID )`,
+  // which falls back to the mailer plugin's `fvt_ct_mail_recipient`
+  // option (see `modules/form/functions.php`, `optionInput( 'recipient',
+  // ..., 'default' => $defaultRecipient )`).
+  $formModuleID = $moduleID;
+  $formObjectID = function_exists( 'gdymc_object_id' ) ? gdymc_object_id() : 0;
 ?>
 
 <div class="form--text col-w2p1" <?php if ($animation) echo 'data-aos="fade-up"'; ?>>
@@ -27,11 +36,11 @@
 <form 
   class="form--form col-w4p3" 
   enctype="multipart/form-data"
-  data-recipient="<?php echo esc_attr( $recipient ); ?>" 
-  data-subject="<?php echo esc_attr( $subject ); ?>"
   data-action="fvt_form_send"
   data-ajax-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>"
   data-nonce="<?php echo esc_attr( wp_create_nonce( 'fvt_form_send' ) ); ?>"
+  data-module-id="<?php echo esc_attr( $formModuleID ); ?>"
+  data-object-id="<?php echo esc_attr( $formObjectID ); ?>"
   <?php if ($animation) echo 'data-aos="fade-up" data-aos-delay="100"'; ?>
 >
   <div class="form--row">
