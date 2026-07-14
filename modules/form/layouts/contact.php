@@ -121,7 +121,6 @@
     <input 
       type="file"
       name="file"
-      required
     />
 
     <div class="filePreview"></div>
