@@ -8,7 +8,7 @@
 
     <?php wp_head(); ?>
 
-    <?php include_once( get_template_directory() . '/includes/templates/browser.php' ); ?>
+    <?php include_once( get_theme_file_path( '/includes/templates/browser.php' ) ); ?>
 
     <title>
       <?php if (is_front_page() || is_home()){
@@ -21,6 +21,6 @@
   
   <body <?php body_class(); ?>>
 
-    <?php include_once( get_template_directory() . '/includes/templates/navigation.php' ); ?>
+    <?php include_once( get_theme_file_path( '/includes/templates/navigation.php' ) ); ?>
 
     <main>
