@@ -120,6 +120,10 @@
     }
   }
 
+  .swiper-navigation-disabled + .content--controls {
+    display: none;
+  }
+
   @include device-size('tablet') {
     .content--gallery {
       div.swiper {

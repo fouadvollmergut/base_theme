@@ -29,13 +29,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 spaceBetween: parseFloat(style.getPropertyValue('--content-gap'), 10) * 16,
                 breakpoints: {
                   0: {
-                    slidesPerView: 1
+                    slidesPerView: 1,
+                    navigation: {
+                      enabled: swiperSlides.length > 1
+                    }
                   },
                   768: {
-                    slidesPerView: swiperSlidesPerView > 2 ? 2 : swiperSlidesPerView
+                    slidesPerView: swiperSlidesPerView > 2 ? 2 : swiperSlidesPerView,
+                    navigation: {
+                      enabled: swiperSlides.length > swiperSlidesPerView
+                    }
                   },
                   1400: {
-                    slidesPerView: swiperSlidesPerView
+                    slidesPerView: swiperSlidesPerView,
+                    navigation: {
+                      enabled: swiperSlides.length > swiperSlidesPerView
+                    }
                   },
                 }
                 // autoplay: {
