@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   768: {
                     slidesPerView: swiperSlidesPerView > 2 ? 2 : swiperSlidesPerView,
                     navigation: {
-                      enabled: swiperSlides.length > swiperSlidesPerView
+                      enabled: swiperSlides.length > 2
                     }
                   },
                   1400: {
