@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo get_bloginfo('description'); ?>">
 
+    <?php if (get_option('custom_company_recaptcha')): ?>
+      <script src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo get_option('custom_company_recaptcha_key'); ?>"></script>
+    <?php endif; ?>
+
     <?php wp_head(); ?>
 
     <?php include_once( get_theme_file_path( '/includes/templates/browser.php' ) ); ?>

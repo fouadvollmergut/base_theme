@@ -34,6 +34,7 @@
 </div>
 
 <form 
+  id="form_<?php echo esc_attr( $formModuleID ); ?>"
   class="form--form col-w4p3" 
   enctype="multipart/form-data"
   data-action="fvt_form_send"
@@ -142,13 +143,14 @@
 
     <div class="gdymc_button_container">
       <div class="submit_underline">
-        <input 
-          class="button button-primary"
-          name="submit"
-          type="submit"
-          required="false"
-          value="<?php _e('Senden', 'Theme'); ?>"
-        />
+          <input 
+            class="button button-primary"
+            data-recaptcha="<?php echo get_option('custom_company_recaptcha_key'); ?>"
+            name="submit"
+            type="submit"
+            required="false"
+            value="<?php _e('Senden', 'Theme'); ?>"
+          />
       </div>
     </div>
   </div>

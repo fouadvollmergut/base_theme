@@ -16,12 +16,36 @@
     $telefon   = isset( $_POST['telefon'] ) ? sanitize_text_field( wp_unslash( $_POST['telefon'] ) )    : '';
     $message   = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
     $privacy   = isset( $_POST['privacy'] ) && $_POST['privacy'];
+    $token     = isset( $_POST['token'] )   ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
 
     $module_id = isset( $_POST['module_id'] ) ? sanitize_text_field( wp_unslash( $_POST['module_id'] ) ) : '';
     $object_id = isset( $_POST['object_id'] ) ? absint( $_POST['object_id'] )                            : 0;
 
     if ( empty( $name ) || empty( $mail ) || ! is_email( $mail ) || empty( $telefon ) || empty( $message ) || ! $privacy ) {
       wp_send_json_error( array( 'message' => __( 'Bitte füllen Sie alle Pflichtfelder aus.', 'Theme' ) ), 400 );
+    }
+
+    if ( get_option('custom_company_recaptcha') ) {
+      $payload = json_encode(array(
+        'event' => array(
+          'token' => $token,
+          'expected_action' => 'FORM_SUBMIT',
+          'site_key' => get_option('custom_company_recaptcha_key')
+        )
+      ));
+
+      $recaptcha_assessment = curl_init();
+      curl_setopt($recaptcha_assessment, CURLOPT_URL, get_option('custom_company_recaptcha_endpoint') . '?key=' . get_option('custom_company_recaptcha_api_key'));
+      curl_setopt($recaptcha_assessment, CURLOPT_POST, 1);
+      curl_setopt($recaptcha_assessment, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+      curl_setopt($recaptcha_assessment, CURLOPT_POSTFIELDS, $payload);
+      curl_setopt($recaptcha_assessment, CURLOPT_RETURNTRANSFER, true);
+      $recaptcha_assessment_result = curl_exec($recaptcha_assessment);
+      $recaptcha_assessment_result = json_decode( $recaptcha_assessment_result, true );
+
+      if ( isset( $recaptcha_assessment_result['riskAnalysis']['score'] ) && $recaptcha_assessment_result['riskAnalysis']['score'] < 0.9 ) {
+        wp_send_json_error( array( 'message' => __( 'Die Anfrage wurde als Spam eingestuft. Sollte das nicht zutreffen melden Sie sich bitte telefonisch bei uns oder probieren Sie es zu einem späteren Zeitpunkt erneut.', 'Theme' ) ), 500 );
+      }
     }
 
     // Resolve the recipient and subject server-side from the per-module

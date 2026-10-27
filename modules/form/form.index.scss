@@ -343,8 +343,9 @@
       }
 
       input[type="submit"].button {
-        background-color: var(--accent-color);
+        background-color: var(--accent-color) !important;
         color: var(--text-color-light);
+        outline: none;
 
         &:hover {
           background-color: var(--accent-color);

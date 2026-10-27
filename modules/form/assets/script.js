@@ -18,6 +18,7 @@ class Form {
     this.filePreview = form.querySelector('.filePreview');
     this.submit = form.querySelector('input[type="submit"], button[type="submit"]');
     this.fields = form.querySelectorAll('input, select, textarea');
+    this.token = null;
 
     this.init();
   }
@@ -105,11 +106,21 @@ class Form {
     return null;
   }
 
-  handleSubmit (event) {
+  async handleSubmit (event) {
     // Always prevent the native form submit / page navigation — submission
     // happens via fetch to the theme's AJAX endpoint.
     event.preventDefault();
     event.stopImmediatePropagation();
+
+    const recaptchaSiteKey = event.target.dataset.recaptcha || '';
+
+    if (recaptchaSiteKey) {
+      this.token = await new Promise(resolve => {
+        grecaptcha.enterprise.ready(async function () {
+          resolve(await grecaptcha.enterprise.execute(recaptchaSiteKey, {action: 'FORM_SUBMIT'}));
+        });
+      });
+    }
 
     // Refresh the live `.invalid` state for every field so the user sees
     // all current validation errors, not only the missing required ones.
@@ -138,6 +149,7 @@ class Form {
     const data = new FormData(this.form);
     data.append('action', action);
     data.append('nonce', this.form.dataset.nonce || '');
+    data.append('token', this.token || '');
     // The recipient (and subject) are deliberately not sent from the
     // client — the AJAX handler resolves them server-side from the
     // GDYMC per-module options identified by the module + object IDs.
